@@ -4,11 +4,13 @@ const router = express.Router()
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const fetchUser = require('./../middleware/fetchUser')
+
 
 //here JWT_SECRET is a secret key used to check weather anyone has tampered the token.
 const JWT_SECRET = 'mySecret';
 
-//createUser using POST: "/api/auth/createuser" no login required
+//ROUTE 1: createUser using POST: "/api/auth/createuser" no login required
 router.post('/createuser', [
 
     //validation
@@ -54,6 +56,7 @@ router.post('/createuser', [
                 }
             }
             //here JWT_SECRET is a secret key used to check weather anyone has tampered the token.
+            //also we use user id to create a authToken
             const authToken = jwt.sign(data, JWT_SECRET); //sign the token
             console.log(authToken)
             res.json({ authToken })
@@ -65,7 +68,7 @@ router.post('/createuser', [
         }
     })
 
-//Authenticate a user using POST: "/api/auth/login" no login required*
+// ROUTE 2: Authenticate a user using POST: "/api/auth/login" no login required*
 router.post('/login', [
     //validation
     body('email').isEmail().withMessage('Email a valid email'),
@@ -97,23 +100,49 @@ router.post('/login', [
                 id: user.id
             }
         }
+
         //here JWT_SECRET is a secret key used to check weather anyone has tampered the token.
+        //also we use user id to create a authToken
         const authToken = jwt.sign(payload, JWT_SECRET); //sign the token
         console.log(authToken)
         res.json({ authToken }) // res.json({ authToken: authToken })
-
-
 
     } catch (error) {
         console.error(error.message)
         res.status(500).send("error occured")
     }
 
-
 }
 
 )
 
+// ROUTE 3: Get loggedin User Details using: POST "/api/auth/getuser" - Login required
+
+// Where ever we need login, here we use fetchuser MIDDLEWARE, first the middleware will run (here fetchuser) then the next (here async (req,res)... will execute)
+router.post('/getuser', fetchUser,
+    async (req, res) => {
+        //if error-> return error and bad request(400)
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+
+        try {
+            
+            //using the middleware (fetchUser.js) we fetch user data from jwt-tocken and add the user to req
+            userId = req.user.id; 
+
+            // finding user by id and selection field except password 
+            const user = await User.findById(userId).select('-password')
+            res.send(user)
+        } catch (error) {
+            console.error(error.message)
+            res.status(500).send("error occured")
+        }
+
+
+    })
 
 
 module.exports = router
