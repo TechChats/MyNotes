@@ -4,7 +4,6 @@ const JWT_SECRET = 'mySecret';
 
 //here the after fetchuser next will run
 const fetchuser = (req, res, next)=>{
-
     // Get the user from the JWT TOKEN and add id to req object
     //getting jwt token form the header
     const token = req.header('auth-token');
