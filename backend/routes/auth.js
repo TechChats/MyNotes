@@ -64,7 +64,7 @@ router.post('/createuser', [
 
         } catch (error) {
             console.error(error.message)
-            res.status(500).send("error occured")
+            res.status(500).send("internal server error occured")
         }
     })
 
@@ -109,7 +109,7 @@ router.post('/login', [
 
     } catch (error) {
         console.error(error.message)
-        res.status(500).send("error occured")
+        res.status(500).send("internal server error occured")
     }
 
 }
@@ -129,7 +129,6 @@ router.post('/getuser', fetchUser,
 
 
         try {
-            
             //using the middleware (fetchUser.js) we fetch user data from jwt-tocken and add the user to req
             userId = req.user.id; 
 
@@ -138,9 +137,8 @@ router.post('/getuser', fetchUser,
             res.send(user)
         } catch (error) {
             console.error(error.message)
-            res.status(500).send("error occured")
+            res.status(500).send("internal server error occured")
         }
-
 
     })
 

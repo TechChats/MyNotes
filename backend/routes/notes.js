@@ -15,7 +15,7 @@ router.get('/fetchallnotes', fetchuser,
             res.send(notes)
         } catch (error) {
             console.error(error.message)
-            res.status(500).send("error occured")
+            res.status(500).send("internal server error occured")
         }
 
     })
@@ -48,12 +48,12 @@ router.post('/addnote', fetchuser,
 
         } catch (error) {
             console.error(error.message)
-            res.status(500).send("error occured")
+            res.status(500).send("internal server error occured")
         }
 
     })
 
-// ROUTE 3: Upadate existing notes for a user using: PUT "/api/notes/updatenote" - Login required
+// ROUTE 3: Upadate existing note for a user using: PUT "/api/notes/updatenote" - Login required
 router.put('/updatenote/:id', fetchuser,
     async (req, res) => {
 
@@ -78,17 +78,45 @@ router.put('/updatenote/:id', fetchuser,
                 return res.status(404).send("Note note Found")
             }
 
-            //now once note is present, then check if the user logged in (whose is trying to update the note) is the original user who had created that note.
-            if(note.user.toString() !== req.user.id){
+            //now once note is present, then allow updation only if the logged in user(user who is trying to update the note) owns this note
+            if (note.user.toString() !== req.user.id) {
                 return res.status(401).send("Not Allowed to update")
             }
 
-            note = await Note.findByIdAndUpdate(req.params.id, {$set: newNote}, {new:true} ) // new:true ??
+            note = await Note.findByIdAndUpdate(req.params.id, { $set: newNote }, { new: true }) // new:true ??
             res.json(note)
 
         } catch (error) {
             console.error(error.message)
-            res.status(500).send("error occured")
+            res.status(500).send("internal server error occured")
+        }
+
+    })
+
+
+// ROUTE 3: delete existing note for a user using: DELETE "/api/notes/deletenote" - Login required
+router.delete('/deletenote/:id', fetchuser,
+    async (req, res) => {
+
+        try {
+            //find the note to be deleted and then delete it
+            let note = await Note.findById(req.params.id) // id from -> /updatenote/:id
+
+            //if not present then send page not found request
+            if (!note) {
+                return res.status(404).send("Note note Found")
+            }
+            //now once note is present, then allow deletion only if the logged in user(user who is trying to update the note) owns this note
+            if (note.user.toString() !== req.user.id) {
+                return res.status(401).send("Not Allowed to delete")
+            }
+
+            note = await Note.findByIdAndDelete(req.params.id)
+            res.json({ note: note, "Success":"This note has been deleted"})
+
+        } catch (error) {
+            console.error(error.message)
+            res.status(500).send("internal server error occured")
         }
 
     })
