@@ -33,6 +33,42 @@ const NoteState = (props) => {
           "tag": "personal",
           "date": "2023-03-23T09:21:58.695Z",
           "__v": 0
+        },
+        {
+          "_id": "641c0b68c765bd294b8bc0f5",
+          "user": "641a9c6befcb9a46a02982c9",
+          "title": "Cricket Match @ Lords",
+          "description": "today at 9 am",
+          "tag": "personal",
+          "date": "2023-03-23T08:18:48.912Z",
+          "__v": 0
+        },
+        {
+          "_id": "641c0b68c765bd294b8bc0f5",
+          "user": "641a9c6befcb9a46a02982c9",
+          "title": "Cricket Match @ Lords",
+          "description": "today at 9 am",
+          "tag": "personal",
+          "date": "2023-03-23T08:18:48.912Z",
+          "__v": 0
+        },
+        {
+          "_id": "641c0b68c765bd294b8bc0f5",
+          "user": "641a9c6befcb9a46a02982c9",
+          "title": "Cricket Match @ Lords",
+          "description": "today at 9 am",
+          "tag": "personal",
+          "date": "2023-03-23T08:18:48.912Z",
+          "__v": 0
+        },
+        {
+          "_id": "641c0b68c765bd294b8bc0f5",
+          "user": "641a9c6befcb9a46a02982c9",
+          "title": "Cricket Match @ Lords",
+          "description": "today at 9 am",
+          "tag": "personal",
+          "date": "2023-03-23T08:18:48.912Z",
+          "__v": 0
         }
       ]
 
