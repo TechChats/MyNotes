@@ -14,12 +14,12 @@ const Notes = () => {
     }, []) //fetch all notes once when render Notes.js
 
     const ref = useRef(null)
-    const [note, setNote] = useState({ id:"", etitle: "", edescription: "", etag: "" })
+    const [note, setNote] = useState({ id: "", etitle: "", edescription: "", etag: "" })
 
     const updateNote = (currentNote) => {
 
         ref.current.click();// here the pop up well enable
-        setNote({id:currentNote._id, etitle: currentNote.title, edescription: currentNote.description, etag: currentNote.tag })
+        setNote({ id: currentNote._id, etitle: currentNote.title, edescription: currentNote.description, etag: currentNote.tag })
     }
 
     const handleClick = (event) => {
@@ -74,6 +74,9 @@ const Notes = () => {
 
             <div className="row my-4">
                 <h2>Your Notes</h2>
+                <div className="container">
+                    {notes.length === 0 && 'No Notes to display Please add your notes'}
+                </div>
                 {notes.map((note) => {
                     return <NoteItems key={note._id} updateNote={updateNote} note={note} />
                 })}

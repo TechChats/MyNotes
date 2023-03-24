@@ -19,10 +19,11 @@ router.post('/createuser', [
     body('password').isLength({ min: 5 }).withMessage('Name must be at least 5 chars long').matches(/\d/).withMessage('must contain a number')],
     async (req, res) => {
 
+        let success = false;
         //if error-> return error and bad request(500)
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+            return res.status(400).json({ success, errors: errors.array() });
         }
 
         try {
@@ -31,7 +32,7 @@ router.post('/createuser', [
             // console.log(user)
 
             if (user) {
-                return res.status(400).json({ error: "User with the same email exists" })
+                return res.status(400).json({ success, error: "User with the same email exists" })
             }
 
             //securing password //hashing
@@ -58,8 +59,9 @@ router.post('/createuser', [
             //here JWT_SECRET is a secret key used to check weather anyone has tampered the token.
             //also we use user id to create a authToken
             const authToken = jwt.sign(data, JWT_SECRET); //sign the token
+            success = true
             console.log(authToken)
-            res.json({ authToken })
+            res.json({ success, authToken })
 
 
         } catch (error) {
@@ -71,13 +73,15 @@ router.post('/createuser', [
 // ROUTE 2: Authenticate a user using POST: "/api/auth/login" no login required*
 router.post('/login', [
     //validation
-    body('email').isEmail().withMessage('Email a valid email'),
+    body('email').isEmail().withMessage('Please enter a valid email'),
     body('password').exists().withMessage('Password cannot be blank')
 ], async (req, res) => {
+
+    let success = false;
     //if error-> return error and bad request(400)
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json({ success, errors: errors.array() });
     }
 
     const { email, password } = req.body;
@@ -86,13 +90,13 @@ router.post('/login', [
         let user = await User.findOne({ email }) // ie let user = await User.findOne({ email: req.body.email })
 
         if (!user) {
-            return res.status(400).json({ error: "User with this email is not found! Please Signup" })
+            return res.status(400).json({ success, error: "User with this email is not found! Please Signup" })
         }
 
         const comparePassword = await bcrypt.compare(password, user.password)
 
         if (!comparePassword) {
-            return res.status(400).json({ error: "Password is incorrect" })
+            return res.status(400).json({ success, error: "Password is incorrect" })
         }
 
         const payload = {
@@ -104,8 +108,9 @@ router.post('/login', [
         //here JWT_SECRET is a secret key used to check weather anyone has tampered the token.
         //also we use user id to create a authToken
         const authToken = jwt.sign(payload, JWT_SECRET); //sign the token
+        success = true
         console.log(authToken)
-        res.json({ authToken }) // res.json({ authToken: authToken })
+        res.json({ success, authToken }) // res.json({ authToken: authToken })
 
     } catch (error) {
         console.error(error.message)
@@ -121,16 +126,18 @@ router.post('/login', [
 // Where ever we need login, here we use fetchuser MIDDLEWARE, first the middleware will run (here fetchuser) then the next (here async (req,res)... will execute)
 router.post('/getuser', fetchUser,
     async (req, res) => {
+
+        let success = false
         //if error-> return error and bad request(400)
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+            return res.status(400).json({ success, errors: errors.array() });
         }
 
 
         try {
             //using the middleware (fetchUser.js) we fetch user data from jwt-tocken and add the user to req
-            userId = req.user.id; 
+            userId = req.user.id;
 
             // finding user by id and selection field except password 
             const user = await User.findById(userId).select('-password')
