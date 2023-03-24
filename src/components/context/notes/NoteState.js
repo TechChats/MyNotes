@@ -44,7 +44,10 @@ const NoteState = (props) => {
         body: JSON.stringify({ title, description, tag }), // {{title:title, description:description, tag:tag}}
       })
 
-    console.log(response.json())
+    // console.log(await response.json())
+    const newAddedNote = await response.json()
+    setNotes(notes.concat(newAddedNote))
+
   }
 
 
@@ -77,12 +80,23 @@ const NoteState = (props) => {
   }
 
   // Delete a Note
-  const deleteNote = (id) => {
-
+  const deleteNote = async (id) => {
+    // API call to deleteNotes 
     console.log("Going to delete note whose id is" + id)
+    const response = await fetch(`${host}/api/notes/deletenote/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQxYTljNmJlZmNiOWE0NmEwMjk4MmM5In0sImlhdCI6MTY3OTQ2NTU3OX0.Yr-lk1W_PIVOCrrCMEW0BTMYrB3feal6drAYJC7DL9Y"
+        }
+      })
     const updatedNotesAfterDeleting = notes.filter((note) => { return note._id !== id })
     setNotes(updatedNotesAfterDeleting)
+    // console.log(await response.json())
+
   }
+
 
   return (
 

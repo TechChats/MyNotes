@@ -10,6 +10,7 @@ const Notes = () => {
 
     useEffect(() => {
         getNotes()
+        // eslint-disable-next-line
     }, []) //fetch all notes once when render Notes.js
 
     return (
