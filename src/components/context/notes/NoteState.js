@@ -3,7 +3,6 @@
 import React, { useState } from 'react'
 import NoteContext from './noteContext'
 
-
 const NoteState = (props) => {
 
   const host = "http://localhost:5000"
@@ -57,7 +56,7 @@ const NoteState = (props) => {
     //API call for editNote
     const response = await fetch(`${host}/api/notes/updatenote/${id}`,
       {
-        method: "POST",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
           "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQxYTljNmJlZmNiOWE0NmEwMjk4MmM5In0sImlhdCI6MTY3OTQ2NTU3OX0.Yr-lk1W_PIVOCrrCMEW0BTMYrB3feal6drAYJC7DL9Y"
@@ -65,18 +64,18 @@ const NoteState = (props) => {
         body: JSON.stringify({ title, description, tag }),
       })
 
-    console.log(response.json())
+    console.log(await response.json())
 
-
-
-    for (let i = 0; i < notes.length; i++) {
-      const element = notes[i];
+    let newNotes = JSON.parse(JSON.stringify(notes))
+    for (let i = 0; i < newNotes.length; i++) {
+      const element = newNotes[i];
       if (element._id === id) {
-        element.title = title
-        element.description = description
-        element.tag = tag
+        newNotes[i].title = title
+        newNotes[i].description = description
+        newNotes[i].tag = tag
       }
     }
+    setNotes(newNotes)
   }
 
   // Delete a Note
@@ -93,7 +92,7 @@ const NoteState = (props) => {
       })
     const updatedNotesAfterDeleting = notes.filter((note) => { return note._id !== id })
     setNotes(updatedNotesAfterDeleting)
-    // console.log(await response.json())
+    console.log(await response.json())
 
   }
 
