@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import AddNote from './AddNote'
 import noteContext from './context/notes/noteContext'
 import NoteItems from './NoteItems'
@@ -6,7 +6,11 @@ import NoteItems from './NoteItems'
 const Notes = () => {
     const context = useContext(noteContext)
     //destructuring context
-    const { notes } = context
+    const { notes, getNotes } = context
+
+    useEffect(() => {
+        getNotes()
+    }, []) //fetch all notes once when render Notes.js
 
     return (
         <>
