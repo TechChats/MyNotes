@@ -94,12 +94,24 @@ const NoteState = (props) => {
 
   }
   // Edit a Note
-  const editNote = () => {
+  const editNote = (id, title, description, tag) => {
 
+    for (let i = 0; i < notes.length; i++) {
+      const element = notes[i];
+      if (element._id === id) {
+        element.title = title
+        element.description = description
+        element.tag = tag
+      }
+    }
   }
-  // Delete a Note
-  const deleteNote = () => {
 
+  // Delete a Note
+  const deleteNote = (id) => {
+
+    console.log("Going to delete note whose id is" + id)
+    const updatedNotesAfterDeleting = notes.filter((note) => { return note._id !== id })
+    setNotes(updatedNotesAfterDeleting)
   }
 
   return (
