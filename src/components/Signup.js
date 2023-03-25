@@ -29,7 +29,7 @@ const Signup = () => {
 
         if (resJson.success) {
             //save the auth token and then redirect
-            localStorage.setItem('token', json.authtoken)
+            localStorage.setItem('token', resJson.authToken)
             navigate('/');
             showAlert("Account Created Successfully", "success")
             // console.log(showAlert)

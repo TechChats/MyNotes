@@ -29,7 +29,7 @@ const Login = () => {
 
         if (resJson.success) {
             //save the auth token and then redirect
-            localStorage.setItem('token', json.authtoken)
+            localStorage.setItem('token', resJson.authToken)
             navigate('/');
             console.log("loging success")
             showAlert("Logged in Successfully", "success")

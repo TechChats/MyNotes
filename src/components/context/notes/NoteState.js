@@ -19,7 +19,7 @@ const NoteState = (props) => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQxYTljNmJlZmNiOWE0NmEwMjk4MmM5In0sImlhdCI6MTY3OTQ2NTU3OX0.Yr-lk1W_PIVOCrrCMEW0BTMYrB3feal6drAYJC7DL9Y"
+          "auth-token": localStorage.getItem('token')
         }
       })
 
@@ -38,7 +38,7 @@ const NoteState = (props) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQxYTljNmJlZmNiOWE0NmEwMjk4MmM5In0sImlhdCI6MTY3OTQ2NTU3OX0.Yr-lk1W_PIVOCrrCMEW0BTMYrB3feal6drAYJC7DL9Y"
+          "auth-token": localStorage.getItem('token')
         },
         body: JSON.stringify({ title, description, tag }), // {{title:title, description:description, tag:tag}}
       })
@@ -59,7 +59,7 @@ const NoteState = (props) => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQxYTljNmJlZmNiOWE0NmEwMjk4MmM5In0sImlhdCI6MTY3OTQ2NTU3OX0.Yr-lk1W_PIVOCrrCMEW0BTMYrB3feal6drAYJC7DL9Y"
+          "auth-token": localStorage.getItem('token')
         },
         body: JSON.stringify({ title, description, tag }),
       })
@@ -87,7 +87,7 @@ const NoteState = (props) => {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQxYTljNmJlZmNiOWE0NmEwMjk4MmM5In0sImlhdCI6MTY3OTQ2NTU3OX0.Yr-lk1W_PIVOCrrCMEW0BTMYrB3feal6drAYJC7DL9Y"
+          "auth-token": localStorage.getItem('token')
         }
       })
     const updatedNotesAfterDeleting = notes.filter((note) => { return note._id !== id })
@@ -100,15 +100,15 @@ const NoteState = (props) => {
   //show alert messages when needed
   const [alert, setAlert] = useState(null)
 
-  const showAlert = (message, type)=>{
+  const showAlert = (message, type) => {
     setAlert({
       msg: message,
       type: type
     })
     setTimeout(() => {
-        setAlert(null);
+      setAlert(null);
     }, 1500);
-}
+  }
 
 
 
