@@ -1,11 +1,24 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import noteContext from './context/notes/noteContext'
 
-const Alert = (props) => {
+function Alert() {
+
+    const context = useContext(noteContext)
+    const { alert } = context
+    console.log(alert,"in alert.js")
+
+    const capitalize = (word)=>{
+        if(word==="danger"){
+            word = "error"
+        }
+        const lower = word.toLowerCase();
+        return lower.charAt(0).toUpperCase() + lower.slice(1);
+    }
     return (
-        <div>
-            <div className="alert alert-danger" role="alert">
-                {props.message}
-            </div>
+        <div style={{height: '50px'}}>
+        {alert && <div className={`alert alert-${alert.type} alert-dismissible fade show`} role="alert">
+           <strong>{capitalize(alert.type)}</strong>: {alert.msg} 
+        </div>}
         </div>
     )
 }

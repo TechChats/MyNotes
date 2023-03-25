@@ -1,10 +1,15 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { json, useNavigate } from 'react-router-dom'
+import noteContext from './context/notes/noteContext'
+
 
 const Login = () => {
 
-    const [credentials, setCredentials] = useState({ email: "", password: "" })
+    const context = useContext(noteContext)
 
+    const { alert, showAlert } = context
+
+    const [credentials, setCredentials] = useState({ email: "", password: "" })
     const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
@@ -26,7 +31,12 @@ const Login = () => {
             //save the auth token and then redirect
             localStorage.setItem('token', json.authtoken)
             navigate('/');
-  
+            console.log("loging success")
+            showAlert("Logged in Successfully", "success")
+            console.log(alert, "alert")
+        }
+        else{
+            showAlert("Logged Failed-Please enter valid credentials", "danger")
         }
     }
 

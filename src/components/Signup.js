@@ -1,8 +1,13 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { json, useNavigate } from 'react-router-dom'
+import noteContext from './context/notes/noteContext'
 
 
 const Signup = () => {
+
+    const context = useContext(noteContext)
+    const { alert, showAlert } = context
+
 
     const [credentials, setCredentials] = useState({ name: "", email: "", password: "", cpassword:"" })
     const navigate = useNavigate();
@@ -26,6 +31,11 @@ const Signup = () => {
             //save the auth token and then redirect
             localStorage.setItem('token', json.authtoken)
             navigate('/');
+            showAlert("Account Created Successfully", "success")
+            // console.log(showAlert)
+
+        }else{
+
         }
     }
 
@@ -52,7 +62,7 @@ const Signup = () => {
                 </div>
                 <div className="mb-3">
                     <label htmlFor="cpassword" className="form-label">Password</label>
-                    <input type="password" className="form-control" id="cpassword" value={credentials.cpassword} name="password" onChange={onChange} />
+                    <input type="password" className="form-control" id="cpassword" value={credentials.cpassword} name="cpassword" onChange={onChange} />
                 </div>
                 <button type="submit" className="btn btn-primary">Submit</button>
             </form>

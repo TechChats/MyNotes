@@ -97,10 +97,26 @@ const NoteState = (props) => {
   }
 
 
+  //show alert messages when needed
+  const [alert, setAlert] = useState(null)
+
+  const showAlert = (message, type)=>{
+    setAlert({
+      msg: message,
+      type: type
+    })
+    setTimeout(() => {
+        setAlert(null);
+    }, 1500);
+}
+
+
+
+
   return (
 
     // value={{state:state, updateStateS1;updateStateS1}}
-    <NoteContext.Provider value={{ notes, addNote, editNote, deleteNote, getNotes }}>
+    <NoteContext.Provider value={{ notes, addNote, editNote, deleteNote, getNotes, alert, setAlert, showAlert }}>
       {props.children}
     </NoteContext.Provider>
   )
