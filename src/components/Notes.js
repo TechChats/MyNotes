@@ -6,7 +6,7 @@ import NoteItems from './NoteItems'
 const Notes = () => {
     const context = useContext(noteContext)
     //destructuring context
-    const { notes, getNotes, editNote } = context
+    const { notes, getNotes, editNote, showAlert } = context
 
     useEffect(() => {
         getNotes()
@@ -26,6 +26,8 @@ const Notes = () => {
         console.log("Going to update note", note)
         event.preventDefault();
         editNote(note.id, note.etitle, note.edescription, note.etag)
+        showAlert("Note Edited Successfully", "success")
+
     }
     const onChange = (event) => {
         setNote({ ...note, [event.target.name]: event.target.value })

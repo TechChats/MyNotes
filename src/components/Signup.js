@@ -6,7 +6,7 @@ import noteContext from './context/notes/noteContext'
 const Signup = () => {
 
     const context = useContext(noteContext)
-    const { alert, showAlert } = context
+    const { showAlert } = context
 
 
     const [credentials, setCredentials] = useState({ name: "", email: "", password: "", cpassword:"" })
@@ -35,7 +35,7 @@ const Signup = () => {
             // console.log(showAlert)
 
         }else{
-
+            showAlert("Please enter valid credentials", "danger")
         }
     }
 

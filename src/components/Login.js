@@ -36,7 +36,7 @@ const Login = () => {
             console.log(alert, "alert")
         }
         else{
-            showAlert("Logged Failed-Please enter valid credentials", "danger")
+            showAlert("Login Failed-Please enter valid credentials", "danger")
         }
     }
 
